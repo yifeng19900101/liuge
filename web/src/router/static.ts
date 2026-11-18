@@ -39,6 +39,51 @@ const staticRoutes: Array<RouteRecordRaw> = [
         },
     },
     {
+        // 机器人聊天
+        path: '/chat',
+        name: 'chat',
+        component: () => import('/@/views/frontend/chat/index.vue'),
+        meta: {
+            title: pageTitle('chat'),
+        },
+    },
+    {
+        // 商城分类
+        path: '/category',
+        name: 'mallCategory',
+        component: () => import('/@/views/frontend/mall/category.vue'),
+        meta: {
+            title: pageTitle('mallCategory'),
+        },
+    },
+    {
+        // 商城购物车
+        path: '/cart',
+        name: 'mallCart',
+        component: () => import('/@/views/frontend/mall/cart.vue'),
+        meta: {
+            title: pageTitle('mallCart'),
+        },
+    },
+    {
+        // 商城我的
+        path: '/mine',
+        name: 'mallMine',
+        component: () => import('/@/views/frontend/mall/mine.vue'),
+        meta: {
+            title: pageTitle('mallMine'),
+        },
+    },
+    {
+        // 商城会员登录（登录后进入聊天页）
+        path: '/login',
+        name: 'mallLogin',
+        component: () => import('/@/views/frontend/mall/login.vue'),
+        meta: {
+            title: pageTitle('mallLogin'),
+        },
+    },
+    {
         path: '/:path(.*)*',
         redirect: '/404',
     },

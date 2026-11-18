@@ -8,4 +8,9 @@ export default {
     loading: 'Loading...',
     user: '会员中心',
     userLogin: '会员登录',
+    chat: '机器人聊天',
+    mallCategory: '分类',
+    mallCart: '购物车',
+    mallMine: '我的',
+    mallLogin: '登录',
 }

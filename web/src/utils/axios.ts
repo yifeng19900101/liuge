@@ -11,6 +11,7 @@ import { useConfig } from '/@/stores/config'
 import { SYSTEM_ZINDEX } from '/@/stores/constant/common'
 import { useUserInfo } from '/@/stores/userInfo'
 import { isAdminApp } from '/@/utils/common'
+import { applySignature } from '/@/utils/sign'
 
 window.requests = []
 window.tokenRefreshing = false
@@ -96,7 +97,8 @@ function createAxios<Data = any, T = ApiPromise<Data>>(axiosConfig: AxiosRequest
                 if (userToken) (config.headers as anyObj)['ba-user-token'] = userToken
             }
 
-            return config
+            // 会员端接口签名
+            return applySignature(config)
         },
         (error) => {
             return Promise.reject(error)

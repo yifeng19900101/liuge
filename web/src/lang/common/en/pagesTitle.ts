@@ -8,4 +8,9 @@ export default {
     loading: 'Loading...',
     user: 'Member Center',
     userLogin: 'Menber Login',
+    chat: 'Chat',
+    mallCategory: 'Category',
+    mallCart: 'Cart',
+    mallMine: 'Profile',
+    mallLogin: 'Login',
 }

@@ -6,6 +6,7 @@ import { loadAndMergeMessages } from '/@/lang/index'
 import staticRoutes from '/@/router/static'
 import { adminBaseRoutePath } from '/@/router/static/adminBase'
 import { useConfig } from '/@/stores/config'
+import { useUserInfo } from '/@/stores/userInfo'
 import { isAdminApp } from '/@/utils/common'
 import { loading } from '/@/utils/loading'
 
@@ -20,6 +21,17 @@ router.beforeEach(async (to) => {
     if (!window.existLoading) {
         loading.show()
         window.existLoading = true
+    }
+
+    // 会员端入口分流：已登录直接进入聊天页，未登录停留在商城首页
+    if (!isAdminApp(to.path)) {
+        const userInfo = useUserInfo()
+        if (to.name === 'chat' && !userInfo.isLogin()) {
+            return { path: '/' }
+        }
+        if ((to.path === '/' || to.name === 'mallLogin') && userInfo.isLogin()) {
+            return { name: 'chat' }
+        }
     }
 
     // 按需动态加载页面的语言包-start
