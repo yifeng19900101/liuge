@@ -14,6 +14,9 @@ use app\admin\model\User;
  * @property string $coefficient  系数
  * @property string $multiple     倍数
  * @property string $risk_amount  风控金额
+ * @property int    $is_risk      是否已风控
+ * @property int    $risk_time    风控时间
+ * @property int    $risk_admin_id 风控操作管理员ID
  * @property string $last_message 最后一条消息
  * @property int    $last_time    最后消息时间
  */

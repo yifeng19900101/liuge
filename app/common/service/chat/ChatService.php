@@ -18,6 +18,7 @@ class ChatService
     protected OrderService $orderService;
     protected ReportService $reportService;
     protected TimeLimitService $timeLimitService;
+    protected RiskService $riskService;
 
     public function __construct()
     {
@@ -26,6 +27,7 @@ class ChatService
         $this->orderService        = new OrderService();
         $this->reportService       = new ReportService($this->orderService);
         $this->timeLimitService    = new TimeLimitService();
+        $this->riskService         = new RiskService();
     }
 
     /**
@@ -34,7 +36,8 @@ class ChatService
     public function history(int $userId): array
     {
         $conversation = $this->conversationService->getOrCreate($userId);
-        $messages     = $this->messageService->listByConversation((int)$conversation->id);
+        // 管理员操作消息属于后台留痕，会员端不展示
+        $messages     = $this->messageService->listByConversation((int)$conversation->id, 50, false);
 
         if (!$messages) {
             $welcome = $this->messageService->create($conversation, 'bot', ChatBot::welcome());
@@ -92,12 +95,16 @@ class ChatService
 
     /**
      * 生成机器人回复
-     * 报表指令优先；限制时段内只回复不可操作；其余内容解析下单
+     * 报表指令优先；已风控或限制时段只回复不可操作；其余内容解析下单
      */
     protected function buildReply(ChatConversation $conversation, string $content): string
     {
         if ($this->timeLimitService->isReportCommand($content)) {
             return $this->reportService->todayReport($conversation, $this->conversationService->settings($conversation));
+        }
+
+        if ($this->riskService->isRisked($conversation)) {
+            return $this->timeLimitService->restrictedMessage();
         }
 
         if ($this->timeLimitService->isRestricted()) {

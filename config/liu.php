@@ -34,4 +34,10 @@ return [
         // 报表指令（需完全相同）
         'command' => (string)env('report.command', '报表'),
     ],
+
+    // 管理员风控指令
+    'risk'        => [
+        // 指令前缀，完整格式如：风控6000
+        'command' => '风控',
+    ],
 ];

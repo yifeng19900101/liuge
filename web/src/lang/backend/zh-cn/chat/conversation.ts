@@ -5,6 +5,10 @@ export default {
     Coefficient: '系数',
     Multiple: '倍数',
     'Risk amount': '风控金额',
+    'Risk status': '风控状态',
+    Risked: '已风控',
+    'Not risked': '未风控',
+    'Risk time': '风控时间',
     'Last message': '最后消息',
     'Last time': '最后消息时间',
 }
