@@ -8,7 +8,7 @@
                 </div>
                 <div class="chat-header-title">
                     <div class="chat-header-name">{{ t('chat.Bot name') }}</div>
-                    <div class="chat-header-status">{{ t('chat.Online') }}</div>
+                    <div class="chat-header-status">{{ userTitle }}</div>
                 </div>
                 <div class="chat-header-side chat-header-more">
                     <el-dropdown trigger="click" @command="onCommand">
@@ -110,6 +110,21 @@ const state = reactive({
 
 const userAvatar = computed(() => (userInfo.avatar ? fullUrl(userInfo.avatar) : ''))
 const canSend = computed(() => state.content.trim() !== '' && !state.sending)
+
+// 手机号中间四位脱敏
+const maskMobile = (mobile: string) => {
+    if (!mobile) return ''
+    if (mobile.length < 8) return mobile
+    return mobile.slice(0, 3) + '****' + mobile.slice(-4)
+}
+
+// 顶栏副标题：用户名称 + 脱敏手机号，均为空时退回「在线」
+const userTitle = computed(() => {
+    const name = userInfo.nickname || userInfo.username || ''
+    const mobile = maskMobile(userInfo.mobile || '')
+    const title = [name, mobile].filter(Boolean).join(' ')
+    return title || t('chat.Online')
+})
 
 const scrollToBottom = () => {
     nextTick(() => {
@@ -342,9 +357,12 @@ onMounted(() => {
     }
 
     .chat-header-status {
-        font-size: 11px;
+        overflow: hidden;
+        font-size: 12px;
         line-height: 14px;
-        color: #07c160;
+        color: #999999;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 
     .chat-header-more-trigger {

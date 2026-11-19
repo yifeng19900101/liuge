@@ -10,6 +10,7 @@ use think\Model;
  * @property int    $user_id      会员ID
  * @property string $session_date 会话日期
  * @property string $coefficient  系数（会话冻结）
+ * @property string $water_rate   水率（会话冻结）
  * @property string $multiple     倍数（会话冻结）
  * @property string $risk_amount  风控金额（会话冻结，可被管理员风控指令覆盖）
  * @property int    $is_risk      是否已风控

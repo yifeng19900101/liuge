@@ -18,6 +18,8 @@ class ChatBot
 
     /**
      * 根据解析结果生成机器人回复
+     * 号码一行一个，带生肖前缀；汇总行放在最后
+     * 例：猴11×50 / 猴23×50 / 已识别 2 个号码，合计 100，用户已下单
      * @param array $result LiuService::parseOrderCodes 的返回值
      */
     public static function reply(array $result): string
@@ -30,17 +32,19 @@ class ChatBot
             return $reply;
         }
 
-        $items = [];
+        $lines = [];
         foreach ($result['list'] as $code => $amount) {
-            $items[] = str_pad((string)$code, 2, '0', STR_PAD_LEFT) . '×' . $amount;
+            $zodiac  = Liuconfig::$numToZodiac[$code] ?? '';
+            $lines[] = $zodiac . str_pad((string)$code, 2, '0', STR_PAD_LEFT) . '×' . $amount;
         }
 
-        $reply = '已识别 ' . $result['count'] . ' 个号码，合计 ' . $result['quantity'] . "：\n" . implode('、', $items);
         if ($result['warnings']) {
-            $reply .= "\n未识别：" . self::formatWarnings($result['warnings']);
+            $lines[] = '未识别：' . self::formatWarnings($result['warnings']);
         }
 
-        return $reply;
+        $lines[] = '已识别 ' . $result['count'] . ' 个号码，合计 ' . $result['quantity'] . '，用户已下单';
+
+        return implode("\n", $lines);
     }
 
     /**

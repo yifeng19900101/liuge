@@ -48,15 +48,14 @@ const baTable = new baTableClass(
                 operatorPlaceholder: t('Fuzzy query'),
                 render: 'tag',
             },
-            { label: t('user.user.avatar'), prop: 'avatar', align: 'center', render: 'image', operator: false },
             {
-                label: t('user.user.Gender'),
-                prop: 'gender',
+                label: t('user.user.Coefficient'),
+                prop: 'coefficient',
                 align: 'center',
-                render: 'tag',
-                custom: { '0': 'info', '1': '', '2': 'success' },
-                replaceValue: { '0': t('Unknown'), '1': t('user.user.male'), '2': t('user.user.female') },
+                operator: false,
+                width: 100,
             },
+            { label: t('user.user.Multiple'), prop: 'multiple', align: 'center', operator: false, width: 90 },
             { label: t('user.user.mobile'), prop: 'mobile', align: 'center', operator: 'LIKE', operatorPlaceholder: t('Fuzzy query') },
             {
                 label: t('user.user.Last login IP'),
@@ -97,10 +96,10 @@ const baTable = new baTableClass(
     },
     {
         defaultItems: {
-            gender: 0,
             money: '0',
-            score: '0',
             status: 'enable',
+            coefficient: '0.04',
+            multiple: '47',
         },
     }
 )

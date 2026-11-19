@@ -10,15 +10,19 @@
         />
 
         <Table />
+
+        <!-- 手机样式聊天窗口 -->
+        <ChatPhone v-model="state.chatVisible" :row="state.chatRow" @sent="baTable.getData()" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { provide } from 'vue'
+import { provide, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import baTableClass from '/@/utils/baTable'
 import Table from '/@/components/table/index.vue'
 import TableHeader from '/@/components/table/header/index.vue'
+import ChatPhone from './chatPhone.vue'
 import { baTableApi } from '/@/api/common'
 
 defineOptions({
@@ -26,6 +30,17 @@ defineOptions({
 })
 
 const { t } = useI18n()
+
+const state = reactive({
+    chatVisible: false,
+    chatRow: null as TableRow | null,
+})
+
+/** 打开手机样式聊天窗口 */
+const openChat = (row: TableRow) => {
+    state.chatRow = row
+    state.chatVisible = true
+}
 
 const baTable = new baTableClass(new baTableApi('/admin/chat.Conversation/'), {
     column: [
@@ -79,6 +94,23 @@ const baTable = new baTableClass(new baTableApi('/admin/chat.Conversation/'), {
             sortable: 'custom',
             operator: 'RANGE',
             width: 160,
+        },
+        {
+            label: t('Operate'),
+            align: 'center',
+            width: 90,
+            render: 'buttons',
+            operator: false,
+            buttons: [
+                {
+                    render: 'basicButton',
+                    name: 'chat',
+                    text: t('chat.conversation.Chat'),
+                    type: 'primary',
+                    icon: 'fa fa-comments',
+                    click: (row: TableRow) => openChat(row),
+                },
+            ],
         },
     ],
     dblClickNotEditColumn: ['all'],

@@ -25,11 +25,11 @@ class TimeLimitService
     }
 
     /**
-     * 限制起始时间，如 21:30:00
+     * 限制起始时间，如 21:15:00
      */
     public function cutoff(): string
     {
-        return (string)($this->config['cutoff'] ?? '21:30:00');
+        return (string)($this->config['cutoff'] ?? '21:15:00');
     }
 
     /**

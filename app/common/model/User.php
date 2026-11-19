@@ -14,6 +14,8 @@ use think\Model;
  * @property string $last_login_ip   上次登录IP
  * @property string $email           会员邮箱
  * @property string $mobile          会员手机号
+ * @property string $coefficient     系数（后台配置比例，实际结算系数 = 1 - 系数）
+ * @property string $multiple        倍数
  * @property string $status          状态:enable=启用,disable=禁用,...(string存储，可自定义其他)
  */
 class User extends Model

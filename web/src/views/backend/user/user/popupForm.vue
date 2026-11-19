@@ -53,14 +53,26 @@
                             remoteUrl: '/admin/user.Group/index',
                         }"
                     />
-                    <FormItem :label="t('user.user.avatar')" type="image" v-model="baTable.form.items!.avatar" />
-                    <el-form-item prop="email" :label="t('user.user.email')">
-                        <el-input
-                            v-model="baTable.form.items!.email"
-                            type="string"
-                            :placeholder="t('Please input field', { field: t('user.user.email') })"
-                        ></el-input>
-                    </el-form-item>
+                    <FormItem
+                        type="number"
+                        :label="t('user.user.Coefficient')"
+                        v-model="baTable.form.items!.coefficient"
+                        prop="coefficient"
+                        :input-attr="{
+                            min: 0.0001,
+                            max: 0.9999,
+                            step: 0.01,
+                            precision: 4,
+                            placeholder: t('user.user.Coefficient tip'),
+                        }"
+                    />
+                    <FormItem
+                        type="number"
+                        :label="t('user.user.Multiple')"
+                        v-model="baTable.form.items!.multiple"
+                        prop="multiple"
+                        :input-attr="{ min: 0.01, step: 1, precision: 2, placeholder: t('user.user.Multiple') }"
+                    />
                     <el-form-item prop="mobile" :label="t('user.user.mobile')">
                         <el-input
                             v-model="baTable.form.items!.mobile"
@@ -68,35 +80,10 @@
                             :placeholder="t('Please input field', { field: t('user.user.mobile') })"
                         ></el-input>
                     </el-form-item>
-                    <FormItem
-                        :label="t('user.user.Gender')"
-                        v-model="baTable.form.items!.gender"
-                        type="radio"
-                        :input-attr="{
-                            border: true,
-                            content: { 0: t('Unknown'), 1: t('user.user.male'), 2: t('user.user.female') },
-                        }"
-                    />
-                    <el-form-item :label="t('user.user.birthday')">
-                        <el-date-picker
-                            class="w100"
-                            value-format="YYYY-MM-DD"
-                            v-model="baTable.form.items!.birthday"
-                            type="date"
-                            :placeholder="t('Please select field', { field: t('user.user.birthday') })"
-                        />
-                    </el-form-item>
                     <el-form-item v-if="baTable.form.operate == 'Edit'" :label="t('user.user.balance')">
                         <el-input v-model="baTable.form.items!.money" readonly>
                             <template #append>
                                 <el-button @click="changeAccount('money')">{{ t('user.user.Adjustment balance') }}</el-button>
-                            </template>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item v-if="baTable.form.operate == 'Edit'" :label="t('user.user.integral')">
-                        <el-input v-model="baTable.form.items!.score" readonly>
-                            <template #append>
-                                <el-button @click="changeAccount('score')">{{ t('user.user.Adjust integral') }}</el-button>
                             </template>
                         </el-input>
                     </el-form-item>
@@ -110,15 +97,6 @@
                                     ? t('Please input field', { field: t('user.user.password') })
                                     : t('user.user.Please leave blank if not modified')
                             "
-                        ></el-input>
-                    </el-form-item>
-                    <el-form-item prop="motto" :label="t('user.user.Personal signature')">
-                        <el-input
-                            @keyup.enter.stop=""
-                            @keyup.ctrl.enter="baTable.onSubmit(formRef)"
-                            v-model="baTable.form.items!.motto"
-                            type="textarea"
-                            :placeholder="t('Please input field', { field: t('user.user.Personal signature') })"
                         ></el-input>
                     </el-form-item>
                     <FormItem
@@ -165,7 +143,6 @@ const rules: Partial<Record<string, FormItemRule[]>> = reactive({
     username: [buildValidatorData({ name: 'required', title: t('user.user.User name') }), buildValidatorData({ name: 'account' })],
     nickname: [buildValidatorData({ name: 'required', title: t('user.user.nickname') })],
     group_id: [buildValidatorData({ name: 'required', message: t('Please select field', { field: t('user.user.group') }) })],
-    email: [buildValidatorData({ name: 'email', title: t('user.user.email') })],
     mobile: [buildValidatorData({ name: 'mobile' })],
     password: [
         {
